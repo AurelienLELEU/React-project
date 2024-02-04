@@ -4,7 +4,7 @@ import Modal from './Modal';
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://eblwtaeglbtxppddyygp.supabase.co'
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibHd0YWVnbGJ0eHBwZGR5eWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY4NzQzNTMsImV4cCI6MjAyMjQ1MDM1M30.6t0_jPNYubLCPmEl8TrK8GCG8g4QRp1mSUejzcMLPH8"
+const supabaseKey = "YourKey"
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 function convertCurrency(price, exchangeRate) {
@@ -44,7 +44,7 @@ function ItemList({ myFilter, myCurrency }) {
     useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
-                const apiKey = '018861a566f6c689570ec619';
+                const apiKey = 'YourKey';
                 const baseCurrency = 'EUR';
                 const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${baseCurrency}/${myCurrency}`;
                 const response = await fetch(apiUrl);
