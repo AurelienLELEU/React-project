@@ -3,10 +3,12 @@ import './App.css';
 import Modal from './Modal';
 import { createClient } from '@supabase/supabase-js'
 
+// Configuration pour l'accès à la base de données Supabase
 const supabaseUrl = 'https://eblwtaeglbtxppddyygp.supabase.co'
-const supabaseKey = "YourKey"
+const supabaseKey = "YourKey" // Remplacez par votre clé Supabase
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+// Fonction pour convertir le prix en fonction du taux de change
 function convertCurrency(price, exchangeRate) {
     if (exchangeRate !== null && !isNaN(exchangeRate)) {
         return price * exchangeRate;
@@ -14,6 +16,7 @@ function convertCurrency(price, exchangeRate) {
     return null;
 }
 
+// Composant pour afficher un article
 function Items({ name, description, seller, photo, onClick, amountInDollars, myCurrency }) {
     return (
         <div className="Item" onClick={onClick}>
@@ -36,15 +39,17 @@ function Items({ name, description, seller, photo, onClick, amountInDollars, myC
     );
 }
 
+// Composant principal pour afficher la liste d'articles
 function ItemList({ myFilter, myCurrency }) {
-    const [articles, setArticles] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [exchangeRate, setExchangeRate] = useState(null);
+    const [articles, setArticles] = useState([]); //useState pour stocker les articles de supabase
+    const [selectedItem, setSelectedItem] = useState(null); //useState pour stocker l'article sélectionné
+    const [exchangeRate, setExchangeRate] = useState(null); //useState pour stocker les taux de change
 
+        // useEffect pour récupérer le taux de change lorsque l'utilisateur change de devise  
     useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
-                const apiKey = 'YourKey';
+                const apiKey = 'YourKey';// Remplacez par votre clé API Exchangerate
                 const baseCurrency = 'EUR';
                 const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${baseCurrency}/${myCurrency}`;
                 const response = await fetch(apiUrl);
@@ -62,7 +67,8 @@ function ItemList({ myFilter, myCurrency }) {
 
         fetchExchangeRate();
     }, [myCurrency]);
-
+    
+    // useEffect pour récupérer les articles depuis Supabase lors du chargement initial
     useEffect(() => {
         const fetchArticles = async () => {
             const { data } = await supabase.from('article').select('*');
@@ -79,7 +85,8 @@ function ItemList({ myFilter, myCurrency }) {
     const handleCloseModal = () => {
         setSelectedItem(null);
     };
-
+    
+    // Filtrer les articles en fonction du texte de recherche
     const filteredArticles = myFilter
         ? articles.filter(
               article =>
@@ -89,6 +96,7 @@ function ItemList({ myFilter, myCurrency }) {
           )
         : articles;
 
+    // Rendu du composant
     return (
         <div className="ItemList">
             {filteredArticles.map((article, index) => (
